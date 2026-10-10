@@ -40,8 +40,9 @@
   .btn.g{background:#fff;border:1px solid var(--line);}
   .btn.on{background:var(--hd);color:#fff;}
   .btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:1px;}
-  .layout{display:grid;grid-template-columns:minmax(340px,470px) 1fr;gap:16px;padding:16px;align-items:start;}
-  @media(max-width:1020px){.layout{grid-template-columns:1fr;}}
+  .layout{display:grid;grid-template-columns:minmax(340px,470px) minmax(0,1fr);gap:16px;padding:16px;align-items:start;}
+  .layout>div{min-width:0;}
+  @media(max-width:1020px){.layout{grid-template-columns:minmax(0,1fr);}}
   .tabs{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
   .tabs .btn{flex:1;justify-content:center;}
   .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;}
@@ -95,27 +96,33 @@
   /* ===== 와디즈 화면 틀 ===== */
   .stage{background:#E3E8E6;border-radius:14px;padding:16px;overflow-x:auto;}
   #frame{margin:0 auto;background:#fff;border-radius:10px;box-shadow:0 2px 14px rgba(0,0,0,.08);overflow:hidden;font-size:13px;color:#222;}
-  #frame.desk{width:1200px;}
-  #frame.mob{width:390px;}
+  /* 틀 폭 = 좌우 여백(--gx) ×2 + 스토리 폭 (+ 데스크톱은 간격 + 오른쪽 패널). 모든 상자는 같은 좌우 여백 안에 정렬 */
+  #frame.desk{--gx:16px;width:1200px;}
+  #frame.mob{--gx:10px;width:390px;}
   #frame.raw{width:auto;background:transparent;box-shadow:none;}
-  #frame.raw .wz,#frame.raw .fside,#frame.raw .fbar{display:none !important;}
-  .wz{background:#f1f3f2;color:#7b8580;border:1px dashed #c6cecb;border-radius:8px;padding:10px 12px;margin:8px 0;font-size:12px;line-height:1.55;position:relative;}
+  #frame.raw .wz,#frame.raw .fside,#frame.raw .fbar,#frame.raw .pad{display:none !important;}
+  #frame.raw .frow{padding:0;justify-content:center;}
+  .pad{padding:0 var(--gx);}
+  .frow{display:flex;gap:24px;align-items:flex-start;padding:0 var(--gx);}
+  .fmain{flex:none;min-width:0;}
+  .fside{flex:1 1 0;min-width:0;}
+  .fside.stick{position:sticky;top:70px;}
+  #frame.mob .frow{display:block;}
+  .scw{overflow:hidden;}
+  .wz{background:#f1f3f2;color:#7b8580;border:1px dashed #c6cecb;border-radius:8px;padding:24px 12px 10px;margin:8px 0;font-size:12px;line-height:1.55;position:relative;}
+  .wz:first-child{margin-top:0;}
   .wz::after{content:"와디즈 자동";position:absolute;top:6px;right:8px;font-size:10px;font-weight:800;background:#fff;border:1px solid #c6cecb;border-radius:4px;padding:0 5px;color:#8a948f;}
   .wz.mk{background:#fff8e8;border-color:#e9cf8f;color:#7a5d1d;}
   .wz.mk::after{content:"메이커 입력";border-color:#e9cf8f;color:#a07a22;}
   .wz h5{font-size:14px;color:#333;margin-bottom:4px;}
   .wz .big{font-size:18px;font-weight:900;color:#222;}
-  .wz .tabs2{display:flex;gap:14px;font-weight:700;color:#555;}
+  .wz .tabs2{display:flex;gap:12px;font-weight:700;color:#555;white-space:nowrap;overflow-x:auto;}
   .wz .tabs2 b{color:#000;border-bottom:2px solid #000;}
-  .slides{display:flex;gap:6px;overflow-x:auto;}
-  .slides img,.slides .ss{width:120px;height:120px;object-fit:cover;border-radius:6px;flex:none;background:#fff;border:1px dashed #e9cf8f;display:flex;align-items:center;justify-content:center;font-size:11px;color:#a07a22;text-align:center;}
-  #frame.mob .slides img,#frame.mob .slides .ss{width:100%;height:auto;aspect-ratio:1/1;}
-  #frame.mob .slides .ss{height:120px;aspect-ratio:auto;}
-  .fbody{display:flex;gap:24px;align-items:flex-start;padding:0 16px;}
-  #frame.mob .fbody{display:block;padding:0 10px;}
-  .fstory{flex:none;min-width:0;}
-  .fside{width:380px;position:sticky;top:70px;}
-  #frame.mob .fside{display:none;}
+  .wz h5 small{font-weight:600;color:#a07a22;margin-left:4px;}
+  .wz .sm{display:flex;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#fff;border:1px dashed #e9cf8f;align-items:center;justify-content:center;font-size:13px;color:#a07a22;}
+  .thumbs2{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .thumbs2 img{width:56px;height:32px;object-fit:cover;border-radius:3px;border:1px solid #e9cf8f;}
+  .thumbs2 span{font-size:11px;border:1px dashed #e9cf8f;border-radius:3px;padding:1px 6px;color:#a07a22;background:#fff;}
   .scaler{position:relative;transform-origin:top left;}
   .rw{border:1px solid #e3e6e5;border-radius:8px;padding:10px 12px;margin-bottom:8px;background:#fff;}
   .rw .bd2{display:inline-block;font-size:10px;font-weight:800;color:var(--wz);border:1px solid var(--wz);border-radius:4px;padding:0 4px;margin-right:4px;}
@@ -261,7 +268,7 @@
   #page .tr p{font-size:calc(19px*var(--fs));line-height:1.6;color:var(--psub);display:flex;gap:8px;}
   #page .tr p b{color:var(--c1);}
   /* 텍스트로 붙여넣는 블록 (와디즈 에디터 글) */
-  #page .tb{padding:40px 64px;background:#fff;color:#222;border-top:2px dashed #9fd8d8;}
+  #page .tb{position:relative;padding:40px 64px;background:#fff;color:#222;border-top:2px dashed #9fd8d8;}
   #page .tb h4{font-size:21px;font-weight:800;margin:22px 0 8px;color:#111;}
   #page .tb h4:first-of-type{margin-top:6px;}
   #page .tb p{font-size:19px;line-height:1.75;white-space:pre-wrap;color:#333;}
@@ -272,7 +279,7 @@
 </head>
 <body>
 <header>
-  <h1>스토리 빌더 <small>MVP 0.2</small> <span class="fmt" id="fmtName">와디즈 스토리</span></h1>
+  <h1>스토리 빌더 <small>MVP 0.3</small> <span class="fmt" id="fmtName">와디즈 스토리</span></h1>
   <button class="btn p" id="fill" title="카드와 브랜드스크립트 내용을 빈 칸에만 채웁니다">스크립트로 채우기</button>
   <button class="btn g" id="sample">예시: 살아있는 회사 소개서</button>
   <button class="btn g" id="reset">새로 시작</button>
@@ -356,7 +363,7 @@
   var FORMATS={
     wadiz_story:{
       name:'와디즈 스토리',observed:'2026-10-10',
-      storyW:{desktop:740,mobile:390},   // 스토리가 화면에 그려지는 폭(px)
+      storyW:{desktop:740,mobile:370},   // 스토리가 화면에 그려지는 폭(px). 모바일은 390px 화면에서 좌우 10px 여백
       foldPx:5490,                       // 스토리 시작에서 "스토리 더보기"까지 높이(화면 px)
       textBlocks:['info','faq'],         // 이미지로 굽지 않고 글로 붙여넣는 블록
       hide:['cta'],                      // 와디즈가 펀딩하기 버튼·리워드 목록을 이미 띄움
@@ -660,21 +667,34 @@
   function renderFrame(){
     var fr=$('#frame'),dev=S.dev,c=S.card,sl=c.slides||[];
     fr.className=dev==='desktop'?'desk':dev==='raw'?'raw':'mob';
-    var slides='<div class="wz mk"><h5>대표 이미지 슬라이드</h5><div class="slides">'+(sl.length?sl.map(function(s){return '<img src="'+s+'" alt="">';}).join(''):['표지','전후','목차','구성품','저자'].map(function(x){return '<div class="ss">'+x+'</div>';}).join(''))+'</div></div>';
-    var info='<div class="wz"><div>'+esc(c.item||'프로젝트 제목')+'</div><div class="big">0% 달성 · 0원 · 0명 참여</div></div><div class="wz">혜택 (와디즈 쿠폰·결제 혜택)</div><div class="wz"><b>유의</b> '+esc(F().notice)+'</div><div class="wz"><div class="tabs2"><b>스토리</b><span>리워드</span><span>새소식</span><span>커뮤니티</span><span>서포터</span><span>환불·정책</span><span>리워드 정보</span></div></div>';
-    var below='<div class="wz"><h5>리워드 선택</h5>'+rewardCards()+'</div><div class="wz">메이커 프로필 · 팔로우 · 문의하기</div><div class="wz">지지서명 · 같이 보면 좋은 프로젝트</div>';
-    var w=dev==='raw'?860*0.7:F().storyW[dev==='desktop'?'desktop':'mobile'];
-    fr.innerHTML=(dev==='desktop'?'<div style="padding:12px 16px 0">'+slides+'</div>':'<div style="padding:10px 10px 0">'+slides+info+'</div>')+
-      '<div class="fbody"><div class="fstory" style="width:'+w+'px">'+(dev==='desktop'?info:'')+'<div class="scw" id="scw"><div class="scaler" id="scaler"><div id="page"></div></div></div>'+(dev==='mobile'?below:'')+'</div>'+
-      (dev==='desktop'?'<aside class="fside"><div class="wz"><h5>리워드 선택</h5>'+rewardCards()+'</div></aside>':'')+'</div>'+
-      '<div class="fbar"><span>공유</span><span>찜</span><span>지지서명</span><b>펀딩하기</b></div>';
+    var names=['표지','전후','목차','구성품','저자'];
+    var slides='<div class="wz mk"><h5>대표 이미지 슬라이드<small>1/'+Math.max(sl.length,1)+'</small></h5>'+(sl[0]?'<img class="sm" src="'+sl[0]+'" alt="">':'<div class="sm">1 · 표지</div>')+'<div class="thumbs2">'+(sl.length?sl.map(function(s){return '<img src="'+s+'" alt="">';}).join(''):names.map(function(x,i){return '<span>'+(i+1)+' '+x+'</span>';}).join(''))+'</div></div>';
+    var head='<div class="wz"><div>'+esc(c.item||'프로젝트 제목')+'</div><div class="big">0% 달성 · 0원 · 0명 참여</div></div><div class="wz">혜택 (와디즈 쿠폰·결제 혜택)</div><div class="wz"><b>유의</b> '+esc(F().notice)+'</div>';
+    var tabs='<div class="wz"><div class="tabs2"><b>스토리</b><span>리워드</span><span>새소식</span><span>커뮤니티</span><span>서포터</span><span>환불·정책</span><span>리워드 정보</span></div></div>';
+    var rw='<div class="wz"><h5>리워드 선택</h5>'+rewardCards()+'</div>';
+    var tail='<div class="wz">메이커 프로필 · 팔로우 · 문의하기</div><div class="wz">지지서명 · 같이 보면 좋은 프로젝트</div>';
+    var story='<div class="scw" id="scw"><div class="scaler" id="scaler"><div id="page"></div></div></div>';
+    var w=dev==='raw'?Math.round(860*0.7):F().storyW[dev==='desktop'?'desktop':'mobile'];
+    if(dev==='desktop'){
+      fr.innerHTML='<div class="frow" style="padding-top:var(--gx)"><div class="fmain" style="width:'+w+'px">'+slides+'</div><div class="fside">'+head+'</div></div>'+
+        '<div class="pad">'+tabs+'</div>'+
+        '<div class="frow"><div class="fmain" style="width:'+w+'px">'+story+'</div><aside class="fside stick">'+rw+'</aside></div>'+
+        '<div class="pad" style="padding-bottom:var(--gx)">'+tail+'</div>';
+    }else if(dev==='mobile'){
+      fr.innerHTML='<div class="pad" style="padding-top:var(--gx)">'+slides+head+tabs+'</div>'+
+        '<div class="frow"><div class="fmain" style="width:'+w+'px">'+story+'</div></div>'+
+        '<div class="pad">'+rw+tail+'</div>'+
+        '<div class="fbar"><span>공유</span><span>찜</span><span>지지서명</span><b>펀딩하기</b></div>';
+    }else{
+      fr.innerHTML='<div class="frow"><div class="fmain" style="width:'+w+'px">'+story+'</div></div>';
+    }
   }
   function renderPage(){
     var pg=$('#page');applyTheme(pg);var sec=0;
     pg.innerHTML=S.blocks.map(function(b){var isSec=b.type!=='spacer'&&b.type!=='notice'&&b.type!=='hero'&&!isText(b);if(b.type!=='spacer'&&b.type!=='notice')sec++;return blockHTML(b,(S.num&&isSec)?String(sec).padStart(2,'0'):'');}).join('');
     if(S.dev!=='raw'&&foldSrc(S.dev==='desktop'?'desktop':'mobile')<pg.offsetHeight){var fp=foldSrc(S.dev==='desktop'?'desktop':'mobile');var fl=document.createElement('div');fl.className='foldline';fl.style.top=fp+'px';fl.innerHTML='<span>여기까지 바로 보임 · 아래는 "스토리 더보기"</span>';pg.appendChild(fl);}
     var s=scaleOf(),sc=$('#scaler');sc.style.transform='scale('+s+')';sc.style.width='860px';
-    $('#scw').style.height=Math.ceil(pg.offsetHeight*s)+'px';$('#scw').style.width=Math.ceil(860*s)+'px';
+    $('#scw').style.height=Math.ceil(pg.offsetHeight*s)+'px';$('#scw').style.width='100%';
   }
   function renderAll(){renderFrame();renderPage();qa();}
 
