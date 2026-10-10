@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers(정적 사이트) 설정. name은 Cloudflare 대시보드의 프로젝트 이름과 같아야 합니다.
+  "name": "story-builder",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./docs"
+  }
+}
