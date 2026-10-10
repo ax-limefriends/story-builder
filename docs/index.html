@@ -272,7 +272,7 @@
 </head>
 <body>
 <header>
-  <h1>스토리 빌더 <small>MVP 0.1</small> <span class="fmt" id="fmtName">와디즈 스토리</span></h1>
+  <h1>스토리 빌더 <small>MVP 0.2</small> <span class="fmt" id="fmtName">와디즈 스토리</span></h1>
   <button class="btn p" id="fill" title="카드와 브랜드스크립트 내용을 빈 칸에만 채웁니다">스크립트로 채우기</button>
   <button class="btn g" id="sample">예시: 살아있는 회사 소개서</button>
   <button class="btn g" id="reset">새로 시작</button>
@@ -729,6 +729,10 @@
     if(has('beforeafter'))L.push(baBad.length?['no','실제 사례 전후 비교에 게시 동의 표시가 없습니다',baBad[0].id]:['ok','전후 비교의 출처가 표시되어 있습니다']);
     var rv=B.filter(function(b){return b.type==='reviews';}).map(function(b){return lines(b.items);}).reduce(function(a,x){return a.concat(x);},[]);
     if(rv.length){var ns=rv.filter(function(x){return !x[2];}).length;L.push(ns?['warn','출처 없는 후기 '+ns+'개: 실제 후기만, 출처를 적으세요']:['ok','후기에 출처가 있습니다']);}
+    // 채울 자리 표시
+    var full=tx+'\n'+[S.card.a1name,S.card.a1bio,S.card.a2name,S.card.a2bio,S.card.rewards].join('\n')+'\n'+B.map(textOf).join('\n');
+    var todo=(full.match(/\[(입력 필요|확인 필요|결정 필요)\][^\n]{0,24}|\((예시|확인 필요)[^)]{0,10}\)|OOO|○○○/g)||[]).filter(function(v,i,a){return a.indexOf(v)===i;});
+    L.push(todo.length?['no','아직 채우지 않은 자리 '+todo.length+'곳: '+todo.slice(0,3).join(' / ')+(todo.length>3?' …':'')+'. 제출 전에 실제 내용으로 바꾸세요']:['ok','"[입력 필요]·(예시)·OOO" 같은 채울 자리 표시가 없습니다']);
     // 예시 글자
     var phN=$('#page').querySelectorAll('.ph,.pp,div.im').length;
     L.push(!phN?['ok','회색 예시 글자·빈 사진 자리가 없습니다']:['warn','회색 예시 글자·빈 사진 자리 '+phN+'곳: 내보낼 때는 빠져서 그 자리가 비게 됩니다']);
