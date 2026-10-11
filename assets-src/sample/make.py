@@ -102,7 +102,7 @@ HERO_CSS = '''
 .glow{position:absolute;left:330px;top:30px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(240,195,90,.16),transparent 65%)}
 '''
 HERO = '''<div class="h"><div class="glow"></div>
-<div class="tab"><div class="sc"><span class="tag">부록 A-1</span><h5>SB7 정리표</h5>
+<div class="tab"><div class="sc"><span class="tag">부록 A-1</span><h5>스토리브랜드 7단계 정리표</h5>
 <div class="r"><b>① 주인공이 원하는 것</b><span class="fill">고객이 알아서 연락하는 홈페이지</span><div class="ln"></div></div>
 <div class="r"><b>② 빌런</b><span class="fill">장점 나열</span><div class="ln"></div></div>
 <div class="r"><b>③ 공감 한 문장</b><div class="ln"></div><div class="ln"></div></div>
@@ -147,7 +147,7 @@ s2 = '''<div class="s l" style="padding:0 80px;flex-direction:column;align-items
 shot('slide2', 1200, 675, s2, SL_CSS, scale=1, q=88)
 
 PARTS_TOC = [('제1부', '진단', '왜 아무도 읽지 않는가', '1~2'), ('제2부', '재료', '이유와 기원 서사', '3~4'),
-             ('제3부', '설계', '고객을 영웅으로 만드는 SB7', '5~9'), ('제4부', '변신', '전후 비교와 숫자·문장', '10~11'),
+             ('제3부', '설계', '고객이 영웅인 스토리브랜드 7단계', '5~9'), ('제4부', '변신', '전후 비교와 숫자·문장', '10~11'),
              ('제5부', '확장', '여러 채널, 90일 실행', '12~13')]
 s3 = '''<div class="s d" style="padding:0 80px"><div style="width:380px"><div class="k">5부 13장 + 부록 7</div>
 <div class="H" style="font-size:54px">진단부터<br>90일 실행까지</div><div class="P" style="font-size:22px">읽는 순서대로 내 소개서가<br>한 장씩 고쳐집니다.</div></div>
@@ -262,7 +262,7 @@ shot('pv2', 716, 420, '''<div class="v"><div class="page"><div class="ch">CHAPTE
 <div style="text-align:center;color:#2f6b57;font-size:20px;font-weight:900;margin:6px 0">↓</div>
 <div style="background:#1d2b26;color:#fff;border-radius:10px;padding:14px;font-weight:700;font-size:13px">20년 동안 쌓인 신고 경험으로, 사장님이 <span class="y">남들이 겪은 실수를 되풀이하지 않게</span> 챙깁니다.</div>
 <p style="font-size:10.5px;color:#8a8f88;margin-top:12px">정진 세무회계 · 책 속 가상 사례</p></div></div>''', PV_CSS, q=88)
-shot('pv3', 716, 420, '''<div class="v"><div class="page" style="width:620px;height:380px"><div class="ch">부록 A-1 · 빈칸 워크시트</div><h4 class="serif" style="margin-bottom:10px">SB7 정리표: 우리 회사 설계도 한 장</h4>
+shot('pv3', 716, 420, '''<div class="v"><div class="page" style="width:620px;height:380px"><div class="ch">부록 A-1 · 빈칸 워크시트</div><h4 class="serif" style="margin-bottom:10px">스토리브랜드 7단계 정리표: 우리 회사 설계도 한 장</h4>
 <table><tr><th style="width:150px">단계</th><th>채울 질문</th><th style="width:170px">답</th></tr>
 <tr><td><b>① 주인공</b></td><td>우리 고객은 누구이고, 원하는 단 한 가지는 무엇입니까?</td><td><span class="ln"></span></td></tr>
 <tr><td><b>② 난관</b></td><td>외적·내적·철학적 문제, 빌런은 무엇입니까?</td><td><span class="ln"></span></td></tr>
@@ -281,7 +281,7 @@ def sheet(t, w=120, h=160, rot=0, extra=''):
 shot('pA', 664, 220, '<div class="b" style="background:#1d2b26"><img src="%s" style="height:180px;box-shadow:0 14px 30px rgba(0,0,0,.5);transform:rotate(-3deg)">'
      '<div style="color:#fff;margin-left:20px"><div style="font-size:30px;font-weight:900">PDF 1권</div><div style="font-size:15px;opacity:.75;margin-top:6px;line-height:1.6">5부 13장 + 부록 A~G<br>태블릿·PC·휴대폰에서 읽기</div></div></div>' % url('cover.jpg'), PT_CSS, q=88)
 shot('pB', 664, 220, '<div class="b">%s</div>' % ''.join(sheet(t, rot=r) for t, r in
-     [('A-1 SB7 정리표', -6), ('A-2 기원 서사 5막', -2), ('A-3 홈페이지 6섹션', 2), ('A-5 주어 바꾸기', 5), ('+ 9종', 8)]), PT_CSS, q=88)
+     [('A-1 스토리브랜드 7단계 정리표', -6), ('A-2 기원 서사 5막', -2), ('A-3 홈페이지 6섹션', 2), ('A-5 주어 바꾸기', 5), ('+ 9종', 8)]), PT_CSS, q=88)
 shot('pC', 664, 220, '<div class="b">%s</div>' % ''.join(
      '<div class="mini" style="width:170px;height:170px"><b>%s</b>%s</div>' % (t, ''.join('<div style="font-size:9.5px;margin-top:5px">□ %s</div>' % i for i in it)) for t, it in
      [('B-1 자가진단표 (40점)', ['첫 문장이 고객의 문제로 시작', "'고객'이 '우리'보다 많다", '5초 안에 무엇을 해 주는지', '분명한 빌런이 있다']),
