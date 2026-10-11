@@ -1098,6 +1098,27 @@
     },function(e){clean();throw e;});
   }
 
+  /* 긴 이미지를 나눌 자리: 글자가 잘리지 않게 ① 블록 경계 ② 한 가지 색으로만 된 빈 줄(가장 두꺼운 곳) ③ 그래도 없으면 정해진 높이 */
+  function splitPoints(cv,H,bounds){
+    var W=cv.width,T=cv.height,out=[0],cur=0,ctx=cv.getContext('2d');
+    while(T-cur>H){
+      var lo=cur+Math.round(H*0.55),hi=cur+H,cut=0;
+      bounds.forEach(function(b){if(b>=lo&&b<=hi&&b>cut)cut=b;});
+      if(!cut){
+        var d=ctx.getImageData(0,lo,W,hi-lo).data,best=0,bestY=0,run=0;
+        for(var y=0;y<hi-lo;y++){
+          var o=y*W*4,r0=d[o],g0=d[o+1],b0=d[o+2],flat=true;
+          for(var x=0;x<W;x+=3){var k=o+x*4;if(Math.abs(d[k]-r0)>6||Math.abs(d[k+1]-g0)>6||Math.abs(d[k+2]-b0)>6){flat=false;break;}}
+          if(flat){run++;if(run>=best){best=run;bestY=y-Math.floor(run/2);}}else run=0;
+        }
+        if(best>=6)cut=lo+bestY;
+      }
+      if(!cut)cut=hi;
+      out.push(cut);cur=cut;
+    }
+    out.push(T);return out;
+  }
+
   /* ===== 내보내기: 이미지 묶음 + 텍스트 + 순서표 ===== */
   function exportAll(){
     if(typeof html2canvas!=='function'){say('이미지 저장 기능을 불러오지 못했습니다. 인터넷 연결을 확인하세요');return;}
@@ -1114,8 +1135,8 @@
       if(r.t==='text'){order.push(no+' [텍스트] '+TYPES[S.blocks[r.i[0]].type].n+'\n'+textOf(S.blocks[r.i[0]]));next();return;}
       els.forEach(function(e,j){e.style.display=r.i.indexOf(j)>=0?'':'none';});
       (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){return html2canvas(pg,{scale:scale,useCORS:true,backgroundColor:null});}).then(function(cv){
-        var H=SL*scale,parts=Math.ceil(cv.height/H),names=[];
-        for(var p=0;p<parts;p++){var h=Math.min(H,cv.height-p*H),c2=document.createElement('canvas');c2.width=cv.width;c2.height=h;var g=c2.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c2.width,h);g.drawImage(cv,0,p*H,cv.width,h,0,0,cv.width,h);var nm=no+'_이미지_'+String.fromCharCode(97+p)+'.png';names.push(nm);dl(c2.toDataURL('image/png'),nm);}
+        var H=SL*scale,names=[],ys=splitPoints(cv,H,els.filter(function(e,j){return r.i.indexOf(j)>=0;}).map(function(e){return Math.round((e.getBoundingClientRect().top-pg.getBoundingClientRect().top)*scale);}));
+        for(var p=0;p<ys.length-1;p++){var y0=ys[p],h=ys[p+1]-y0,c2=document.createElement('canvas');c2.width=cv.width;c2.height=h;var g=c2.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c2.width,h);g.drawImage(cv,0,y0,cv.width,h,0,0,cv.width,h);var nm=no+'_이미지_'+String.fromCharCode(97+p)+'.png';names.push(nm);dl(c2.toDataURL('image/png'),nm);}
         order.push(no+' [이미지] '+r.i.map(function(i){return TYPES[S.blocks[i].type].n;}).join(' → ')+'\n'+names.join(', '));
         setTimeout(next,400);
       },function(){restore();say('이미지 저장에 실패했습니다');});
