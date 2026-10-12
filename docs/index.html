@@ -90,7 +90,8 @@
   .qa li.info::before{content:"i";color:#2563eb;}
   .qa li[data-go]{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;}
   .qa .meta{font-size:12px;color:var(--sub);margin-top:8px;}
-  .viewbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;}
+  .viewbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;position:sticky;top:var(--hdh,58px);z-index:25;background:var(--bg);padding:8px 0;transition:box-shadow .15s;}
+  .viewbar.stuck{box-shadow:0 6px 10px -6px rgba(0,0,0,.18);}
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1b2530;color:#fff;padding:9px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;}
   .toast.on{opacity:1;}
   /* ===== 와디즈 화면 틀 ===== */
@@ -106,7 +107,7 @@
   .frow{display:flex;gap:24px;align-items:flex-start;padding:0 var(--gx);}
   .fmain{flex:none;min-width:0;}
   .fside{flex:1 1 0;min-width:0;}
-  .fside.stick{position:sticky;top:70px;}
+  .fside.stick{position:sticky;top:calc(var(--hdh,58px) + var(--vbh,52px) + 8px);}
   #frame.mob .frow{display:block;}
   .scw{overflow:hidden;}
   .wz{background:#f1f3f2;color:#7b8580;border:1px dashed #c6cecb;border-radius:8px;padding:24px 12px 10px;margin:8px 0;font-size:12px;line-height:1.55;position:relative;}
@@ -1144,6 +1145,12 @@
     next();
   }
   $('#exportAll').addEventListener('click',exportAll);
+
+  /* 미리보기 버튼 줄: 스크롤해도 머리글 바로 아래에 붙어 따라옴 */
+  (function(){var hd=document.querySelector('header'),vb=document.querySelector('.viewbar'),rs=document.documentElement.style;
+    function size(){rs.setProperty('--hdh',hd.offsetHeight+'px');rs.setProperty('--vbh',vb.offsetHeight+'px');stuck();}
+    function stuck(){vb.classList.toggle('stuck',window.scrollY>0&&vb.getBoundingClientRect().top<=parseFloat(getComputedStyle(vb).top)+1);}
+    size();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(size);window.addEventListener('resize',size);window.addEventListener('scroll',stuck,{passive:true});})();
 
   window.__wsb={state:function(){return S;},qa:function(){return $('#qa').innerText;},runs:runs,textOf:function(i){return textOf(S.blocks[i]);}};
 
